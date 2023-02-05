@@ -11,13 +11,25 @@ open class ComposableController: UIHostingController<AnyView> {
     // MARK: - Property
     
     // MARK: - Initializer
+    public init(
+        @ViewBuilder content: @escaping () -> some View
+    ) {
+        super.init(
+            rootView: AnyView(
+                ComposableView(
+                    content: content
+                )
+            )
+        )
+    }
+    
     public init<A: ObservableObject>(
         _ a: A,
         @ViewBuilder content: @escaping () -> some View
     ) {
         super.init(
             rootView: AnyView(
-                ComposableView(
+                ComposableView1(
                     a,
                     content: content
                 )

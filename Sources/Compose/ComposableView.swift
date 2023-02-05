@@ -8,6 +8,29 @@
 import SwiftUI
 
 struct ComposableView<
+    Content: View
+>: View {
+    // MARK: - View
+    var body: some View {
+        content()
+    }
+    
+    // MARK: - Property
+    private var content: () -> Content
+    
+    // MARK: - Initializer
+    init(
+        @ViewBuilder content: @escaping () -> Content
+    ) {
+        self.content = content
+    }
+    
+    // MARK: - Public
+    
+    // MARK: - Private
+}
+
+struct ComposableView1<
     A: ObservableObject,
     Content: View
 >: View {
@@ -17,7 +40,6 @@ struct ComposableView<
     }
     
     // MARK: - Property
-    @available(iOS 14.0, *)
     @StateObject
     private var a: A
     
