@@ -8,6 +8,29 @@
 import SwiftUI
 
 struct ComposableView<
+    Content: View
+>: View {
+    // MARK: - View
+    var body: some View {
+        content()
+    }
+    
+    // MARK: - Property
+    private let content: () -> Content
+    
+    // MARK: - Initializer
+    init(
+        @ViewBuilder content: @escaping () -> Content
+    ) {
+        self.content = content
+    }
+    
+    // MARK: - Public
+    
+    // MARK: - Private
+}
+
+struct ComposableView1<
     A: ObservableObject,
     Content: View
 >: View {
@@ -17,11 +40,10 @@ struct ComposableView<
     }
     
     // MARK: - Property
-    @available(iOS 14.0, *)
     @StateObject
     private var a: A
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
@@ -53,7 +75,7 @@ struct ComposableView2<
     @StateObject
     private var b: B
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
@@ -90,7 +112,7 @@ struct ComposableView3<
     @StateObject
     private var c: C
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
@@ -132,7 +154,7 @@ struct ComposableView4<
     @StateObject
     private var d: D
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
@@ -179,7 +201,7 @@ struct ComposableView5<
     @StateObject
     private var e: E
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
@@ -231,7 +253,7 @@ struct ComposableView6<
     @StateObject
     private var f: F
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
@@ -288,7 +310,7 @@ struct ComposableView7<
     @StateObject
     private var g: G
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
@@ -350,7 +372,7 @@ struct ComposableView8<
     @StateObject
     private var h: H
     
-    private var content: () -> Content
+    private let content: () -> Content
     
     // MARK: - Initializer
     init(
