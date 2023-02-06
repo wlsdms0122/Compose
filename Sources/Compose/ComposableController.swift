@@ -7,32 +7,41 @@
 
 import SwiftUI
 
+class RootViewBuilder {
+    var body: (() -> AnyView)?
+}
+
 open class ComposableController: UIHostingController<AnyView> {
     // MARK: - Property
+    private let builder: RootViewBuilder
     
     // MARK: - Initializer
-    public init(
-        @ViewBuilder content: @escaping () -> some View
-    ) {
+    public init() {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
-                ComposableView(
-                    content: content
-                )
+                ComposableView {
+                    builder.body?()
+                }
             )
         )
     }
     
     public init<A: ObservableObject>(
-        _ a: A,
-        @ViewBuilder content: @escaping () -> some View
+        _ a: A
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView1(
-                    a,
-                    content: content
-                )
+                    a
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -42,16 +51,19 @@ open class ComposableController: UIHostingController<AnyView> {
         B: ObservableObject
     >(
         _ a: A,
-        _ b: B,
-        @ViewBuilder content: @escaping () -> some View
+        _ b: B
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView2(
                     a,
-                    b,
-                    content: content
-                )
+                    b
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -63,17 +75,20 @@ open class ComposableController: UIHostingController<AnyView> {
     >(
         _ a: A,
         _ b: B,
-        _ c: C,
-        @ViewBuilder content: @escaping () -> some View
+        _ c: C
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView3(
                     a,
                     b,
-                    c,
-                    content: content
-                )
+                    c
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -87,18 +102,21 @@ open class ComposableController: UIHostingController<AnyView> {
         _ a: A,
         _ b: B,
         _ c: C,
-        _ d: D,
-        @ViewBuilder content: @escaping () -> some View
+        _ d: D
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView4(
                     a,
                     b,
                     c,
-                    d,
-                    content: content
-                )
+                    d
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -114,9 +132,11 @@ open class ComposableController: UIHostingController<AnyView> {
         _ b: B,
         _ c: C,
         _ d: D,
-        _ e: E,
-        @ViewBuilder content: @escaping () -> some View
+        _ e: E
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView5(
@@ -124,9 +144,10 @@ open class ComposableController: UIHostingController<AnyView> {
                     b,
                     c,
                     d,
-                    e,
-                    content: content
-                )
+                    e
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -144,9 +165,11 @@ open class ComposableController: UIHostingController<AnyView> {
         _ c: C,
         _ d: D,
         _ e: E,
-        _ f: F,
-        @ViewBuilder content: @escaping () -> some View
+        _ f: F
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView6(
@@ -155,9 +178,10 @@ open class ComposableController: UIHostingController<AnyView> {
                     c,
                     d,
                     e,
-                    f,
-                    content: content
-                )
+                    f
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -177,9 +201,11 @@ open class ComposableController: UIHostingController<AnyView> {
         _ d: D,
         _ e: E,
         _ f: F,
-        _ g: G,
-        @ViewBuilder content: @escaping () -> some View
+        _ g: G
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView7(
@@ -189,9 +215,10 @@ open class ComposableController: UIHostingController<AnyView> {
                     d,
                     e,
                     f,
-                    g,
-                    content: content
-                )
+                    g
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -213,9 +240,11 @@ open class ComposableController: UIHostingController<AnyView> {
         _ e: E,
         _ f: F,
         _ g: G,
-        _ h: H,
-        @ViewBuilder content: @escaping () -> some View
+        _ h: H
     ) {
+        let builder = RootViewBuilder()
+        self.builder = builder
+        
         super.init(
             rootView: AnyView(
                 ComposableView8(
@@ -226,9 +255,10 @@ open class ComposableController: UIHostingController<AnyView> {
                     e,
                     f,
                     g,
-                    h,
-                    content: content
-                )
+                    h
+                ) {
+                    builder.body?()
+                }
             )
         )
     }
@@ -241,6 +271,11 @@ open class ComposableController: UIHostingController<AnyView> {
     // MARK: - Lifecycle
     
     // MARK: - Public
+    public func run(@ViewBuilder _ content: @escaping () -> some View) {
+        builder.body = {
+            AnyView(content())
+        }
+    }
     
     // MARK: - Private
 }
