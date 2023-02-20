@@ -8,7 +8,15 @@
 import SwiftUI
 
 class RootViewBuilder {
-    var body: (() -> AnyView)?
+    private(set) var content: () -> AnyView
+    
+    init(_ content: @escaping () -> some View) {
+        self.content = { AnyView(content()) }
+    }
+    
+    func setcontent(_ content: @escaping () -> some View) {
+        self.content = { AnyView(content()) }
+    }
 }
 
 open class ComposableController: UIHostingController<AnyView> {
@@ -16,31 +24,36 @@ open class ComposableController: UIHostingController<AnyView> {
     private let builder: RootViewBuilder
     
     // MARK: - Initializer
-    public init() {
-        let builder = RootViewBuilder()
+    public init(
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
+    ) {
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView {
-                    builder.body?()
+                ComposeView {
+                    builder.content()
                 }
             )
         )
     }
     
-    public init<A: ObservableObject>(
-        _ a: A
+    public init<
+        A: ObservableObject
+    >(
+        _ a: A,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView1(
+                ComposeView1(
                     a
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -51,18 +64,19 @@ open class ComposableController: UIHostingController<AnyView> {
         B: ObservableObject
     >(
         _ a: A,
-        _ b: B
+        _ b: B,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView2(
+                ComposeView2(
                     a,
                     b
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -75,19 +89,20 @@ open class ComposableController: UIHostingController<AnyView> {
     >(
         _ a: A,
         _ b: B,
-        _ c: C
+        _ c: C,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView3(
+                ComposeView3(
                     a,
                     b,
                     c
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -102,20 +117,21 @@ open class ComposableController: UIHostingController<AnyView> {
         _ a: A,
         _ b: B,
         _ c: C,
-        _ d: D
+        _ d: D,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView4(
+                ComposeView4(
                     a,
                     b,
                     c,
                     d
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -132,21 +148,22 @@ open class ComposableController: UIHostingController<AnyView> {
         _ b: B,
         _ c: C,
         _ d: D,
-        _ e: E
+        _ e: E,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView5(
+                ComposeView5(
                     a,
                     b,
                     c,
                     d,
                     e
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -165,14 +182,15 @@ open class ComposableController: UIHostingController<AnyView> {
         _ c: C,
         _ d: D,
         _ e: E,
-        _ f: F
+        _ f: F,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView6(
+                ComposeView6(
                     a,
                     b,
                     c,
@@ -180,7 +198,7 @@ open class ComposableController: UIHostingController<AnyView> {
                     e,
                     f
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -201,14 +219,15 @@ open class ComposableController: UIHostingController<AnyView> {
         _ d: D,
         _ e: E,
         _ f: F,
-        _ g: G
+        _ g: G,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView7(
+                ComposeView7(
                     a,
                     b,
                     c,
@@ -217,7 +236,7 @@ open class ComposableController: UIHostingController<AnyView> {
                     f,
                     g
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -240,14 +259,15 @@ open class ComposableController: UIHostingController<AnyView> {
         _ e: E,
         _ f: F,
         _ g: G,
-        _ h: H
+        _ h: H,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let builder = RootViewBuilder()
+        let builder = RootViewBuilder(content)
         self.builder = builder
         
         super.init(
             rootView: AnyView(
-                ComposableView8(
+                ComposeView8(
                     a,
                     b,
                     c,
@@ -257,7 +277,7 @@ open class ComposableController: UIHostingController<AnyView> {
                     g,
                     h
                 ) {
-                    builder.body?()
+                    builder.content()
                 }
             )
         )
@@ -272,10 +292,208 @@ open class ComposableController: UIHostingController<AnyView> {
     
     // MARK: - Public
     public func run(@ViewBuilder _ content: @escaping () -> some View) {
-        builder.body = {
-            AnyView(content())
-        }
+        builder.setcontent(content)
     }
     
     // MARK: - Private
+}
+
+public extension ComposableController {
+    convenience init(
+        _ content: some View
+    ) {
+        self.init {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject
+    >(
+        _ a: A,
+        _ content: some View
+    ) {
+        self.init(a) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject
+    >(
+        _ a: A,
+        _ b: B,
+        _ content: some View
+    ) {
+        self.init(
+            a,
+            b
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject
+    >(
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ content: some View
+    ) {
+        self.init(
+            a,
+            b,
+            c
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject
+    >(
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ content: some View
+    ) {
+        self.init(
+            a,
+            b,
+            c,
+            d
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject
+    >(
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ content: some View
+    ) {
+        self.init(
+            a,
+            b,
+            c,
+            d,
+            e
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject
+    >(
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ f: F,
+        _ content: some View
+    ) {
+        self.init(
+            a,
+            b,
+            c,
+            d,
+            e,
+            f
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject,
+        G: ObservableObject
+    >(
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ f: F,
+        _ g: G,
+        _ content: some View
+    ) {
+        self.init(
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject,
+        G: ObservableObject,
+        H: ObservableObject
+    >(
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ f: F,
+        _ g: G,
+        _ h: H,
+        _ content: some View
+    ) {
+        self.init(
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            h
+        ) {
+            content
+        }
+    }
+    
+    func run(_ content: some View) {
+        run { content }
+    }
 }
