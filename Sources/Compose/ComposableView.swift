@@ -1,319 +1,194 @@
 //
 //  ComposableView.swift
+//  
 //
-//
-//  Created by JSilver on 2023/02/04.
+//  Created by JSilver on 2023/02/20.
 //
 
+import UIKit
 import SwiftUI
 
-struct ComposableView<
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
+open class ComposableView: UIView {
     // MARK: - Property
-    private let content: () -> Content
+    private let controller: ComposableController
+    public var rootView: AnyView { controller.rootView }
     
     // MARK: - Initializer
-    init(
-        @ViewBuilder content: @escaping () -> Content
+    public init(
+        frame: CGRect = .zero,
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.content = content
+        let controller = ComposableController(content)
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView1<
-    A: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView2<
-    A: ObservableObject,
-    B: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject,
+        B: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
         _ b: B,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            b,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView3<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
         _ b: B,
         _ c: C,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            b,
+            c,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView4<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
         _ b: B,
         _ c: C,
         _ d: D,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            b,
+            c,
+            d,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView5<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
         _ b: B,
         _ c: C,
         _ d: D,
         _ e: E,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            b,
+            c,
+            d,
+            e,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView6<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
-    F: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
-    @StateObject
-    private var f: F
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
         _ b: B,
         _ c: C,
         _ d: D,
         _ e: E,
         _ f: F,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
-        self._f = .init(wrappedValue: f)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView7<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
-    F: ObservableObject,
-    G: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
-    @StateObject
-    private var f: F
-    @StateObject
-    private var g: G
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject,
+        G: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
         _ b: B,
         _ c: C,
@@ -321,61 +196,36 @@ struct ComposableView7<
         _ e: E,
         _ f: F,
         _ g: G,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
-        self._f = .init(wrappedValue: f)
-        self._g = .init(wrappedValue: g)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
     }
     
-    // MARK: - Public
-    
-    // MARK: - Private
-}
-
-struct ComposableView8<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
-    F: ObservableObject,
-    G: ObservableObject,
-    H: ObservableObject,
-    Content: View
->: View {
-    // MARK: - View
-    var body: some View {
-        content()
-    }
-    
-    // MARK: - Property
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
-    @StateObject
-    private var f: F
-    @StateObject
-    private var g: G
-    @StateObject
-    private var h: H
-    
-    private let content: () -> Content
-    
-    // MARK: - Initializer
-    init(
+    public init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject,
+        G: ObservableObject,
+        H: ObservableObject
+    >(
+        frame: CGRect = .zero,
         _ a: A,
         _ b: B,
         _ c: C,
@@ -384,21 +234,268 @@ struct ComposableView8<
         _ f: F,
         _ g: G,
         _ h: H,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
-        self._f = .init(wrappedValue: f)
-        self._g = .init(wrappedValue: g)
-        self._h = .init(wrappedValue: h)
-        self.content = content
+        let controller = ComposableController(
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            h,
+            content
+        )
+        self.controller = controller
+        
+        super.init(frame: frame)
+        
+        addSubview(from: controller)
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Public
+    public func run(@ViewBuilder _ content: @escaping () -> some View) {
+        controller.run(content)
+    }
     
     // MARK: - Private
+    private func addSubview(from controller: UIViewController) {
+        guard let view = controller.view else { return }
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(view)
+        
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: topAnchor),
+            view.trailingAnchor.constraint(equalTo: trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: leadingAnchor)
+        ])
+    }
 }
 
+public extension ComposableView {
+    convenience init(
+        frame: CGRect = .zero,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ b: B,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a,
+            b
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a,
+            b,
+            c
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a,
+            b,
+            c,
+            d
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a,
+            b,
+            c,
+            d,
+            e
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ f: F,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a,
+            b,
+            c,
+            d,
+            e,
+            f
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject,
+        G: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ f: F,
+        _ g: G,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g
+        ) {
+            content
+        }
+    }
+    
+    convenience init<
+        A: ObservableObject,
+        B: ObservableObject,
+        C: ObservableObject,
+        D: ObservableObject,
+        E: ObservableObject,
+        F: ObservableObject,
+        G: ObservableObject,
+        H: ObservableObject
+    >(
+        frame: CGRect = .zero,
+        _ a: A,
+        _ b: B,
+        _ c: C,
+        _ d: D,
+        _ e: E,
+        _ f: F,
+        _ g: G,
+        _ h: H,
+        _ content: some View
+    ) {
+        self.init(
+            frame: frame,
+            a,
+            b,
+            c,
+            d,
+            e,
+            f,
+            g,
+            h
+        ) {
+            content
+        }
+    }
+    
+    public func run(_ content: some View) {
+        run { content }
+    }
+}
