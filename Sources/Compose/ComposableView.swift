@@ -10,15 +10,21 @@ import SwiftUI
 
 open class ComposableView: UIView {
     // MARK: - Property
-    private let controller: ComposableController
+    public let controller: ComposableController
+    
     public var rootView: AnyView { controller.rootView }
+    public var content: UIView { controller.view }
     
     // MARK: - Initializer
     public init(
         frame: CGRect = .zero,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        let controller = ComposableController(content)
+        let controller = ComposableController(
+            disableSafeArea: disableSafeArea,
+            content
+        )
         self.controller = controller
         
         super.init(frame: frame)
@@ -31,10 +37,12 @@ open class ComposableView: UIView {
     >(
         frame: CGRect = .zero,
         _ a: A,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
             a,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -51,11 +59,13 @@ open class ComposableView: UIView {
         frame: CGRect = .zero,
         _ a: A,
         _ b: B,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
             a,
             b,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -74,12 +84,14 @@ open class ComposableView: UIView {
         _ a: A,
         _ b: B,
         _ c: C,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
             a,
             b,
             c,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -100,6 +112,7 @@ open class ComposableView: UIView {
         _ b: B,
         _ c: C,
         _ d: D,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
@@ -107,6 +120,7 @@ open class ComposableView: UIView {
             b,
             c,
             d,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -129,6 +143,7 @@ open class ComposableView: UIView {
         _ c: C,
         _ d: D,
         _ e: E,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
@@ -137,6 +152,7 @@ open class ComposableView: UIView {
             c,
             d,
             e,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -161,6 +177,7 @@ open class ComposableView: UIView {
         _ d: D,
         _ e: E,
         _ f: F,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
@@ -170,6 +187,7 @@ open class ComposableView: UIView {
             d,
             e,
             f,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -196,6 +214,7 @@ open class ComposableView: UIView {
         _ e: E,
         _ f: F,
         _ g: G,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
@@ -206,6 +225,7 @@ open class ComposableView: UIView {
             e,
             f,
             g,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -234,6 +254,7 @@ open class ComposableView: UIView {
         _ f: F,
         _ g: G,
         _ h: H,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let controller = ComposableController(
@@ -245,6 +266,7 @@ open class ComposableView: UIView {
             f,
             g,
             h,
+            disableSafeArea: disableSafeArea,
             content
         )
         self.controller = controller
@@ -282,10 +304,12 @@ open class ComposableView: UIView {
 public extension ComposableView {
     convenience init(
         frame: CGRect = .zero,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
-            frame: frame
+            frame: frame,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -296,11 +320,13 @@ public extension ComposableView {
     >(
         frame: CGRect = .zero,
         _ a: A,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
             frame: frame,
-            a
+            a,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -313,12 +339,14 @@ public extension ComposableView {
         frame: CGRect = .zero,
         _ a: A,
         _ b: B,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
             frame: frame,
             a,
-            b
+            b,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -333,13 +361,15 @@ public extension ComposableView {
         _ a: A,
         _ b: B,
         _ c: C,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
             frame: frame,
             a,
             b,
-            c
+            c,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -356,6 +386,7 @@ public extension ComposableView {
         _ b: B,
         _ c: C,
         _ d: D,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -363,7 +394,8 @@ public extension ComposableView {
             a,
             b,
             c,
-            d
+            d,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -382,6 +414,7 @@ public extension ComposableView {
         _ c: C,
         _ d: D,
         _ e: E,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -390,7 +423,8 @@ public extension ComposableView {
             b,
             c,
             d,
-            e
+            e,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -411,6 +445,7 @@ public extension ComposableView {
         _ d: D,
         _ e: E,
         _ f: F,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -420,7 +455,8 @@ public extension ComposableView {
             c,
             d,
             e,
-            f
+            f,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -443,6 +479,7 @@ public extension ComposableView {
         _ e: E,
         _ f: F,
         _ g: G,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -453,7 +490,8 @@ public extension ComposableView {
             d,
             e,
             f,
-            g
+            g,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -478,6 +516,7 @@ public extension ComposableView {
         _ f: F,
         _ g: G,
         _ h: H,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -489,13 +528,14 @@ public extension ComposableView {
             e,
             f,
             g,
-            h
+            h,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
     }
     
-    public func run(_ content: some View) {
+    func run(_ content: some View) {
         run { content }
     }
 }
