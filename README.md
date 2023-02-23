@@ -8,7 +8,12 @@ Compose is a package that allows you to use `UIViewController` view as `SwiftUI`
 - [Installation](#installation)
     - [Swift Package Manager](#swift-package-manager)
 - [Getting Started](#getting-started)
-  - [Extra Example](#extra-example)
+  - [Extras](#extras)
+    - [Variable initializer](#variable-initializer)
+    - [ComposableView supports](#composableview-supports)
+  - [Usecases](#usecases)
+    - [Common `ViewModel`(`ObservableObject`) usecase](#common-viewmodelobservableobject-usecase)
+    - [Separate child view usecase](#separate-child-view-usecase)
   - [Preview](#preview)
 - [Contribution](#contribution)
 - [License](#license)
@@ -20,9 +25,13 @@ Compose is a package that allows you to use `UIViewController` view as `SwiftUI`
 ### Swift Package Manager
 ```swift
 dependencies: [
-    .package(url: "https://github.com/wlsdms0122/Compose.git", exact: "1.1.0")
+    .package(url: "https://github.com/wlsdms0122/Compose.git", exact: "1.2.1")
 ]
 ```
+
+> ⚠️ `1.2.1` version access private property of `UIHostingController` for fixing issue that view shouldnt' ignore safe area.
+>
+> It can cause the app to be rejected when attempting to deploy to the App Store.
 
 # Getting Started
 You can inherit `ComposableController` to make view controller using `SwiftUI` view.
@@ -96,8 +105,49 @@ public init<A, B, C, D, E, F, G>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F,
 public init<A, B, C, D, E, F, G, H>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F, _ g: G, _ h: H) where A : ObservableObject, B : ObservableObject, C : ObservableObject, D : ObservableObject, E : ObservableObject, F : ObservableObject, G : ObservableObject, H : ObservableObject
 ```
 
-## Extra Example
-If you need to use injected view model of view, you can use like this.
+## Extras
+### Variable initializer
+You can layout view in super initializer call also.
+
+```swift
+import Compose
+
+class MainViewController: ComposableController {
+    override init() {
+        super.init {
+            Text("Hello World")
+        }
+    }
+}
+```
+
+```swift
+ComposableController(Text("Hello World"))
+```
+
+### ComposableView supports
+If you want to convert a SwiftUI `View` to a `UIView`, use `ComposableView`. It's almost same with `ComposableController`.
+
+```swift
+import Compose
+
+/// Define custom `UIView`.
+class TitleLabel: ComposableView {
+    init(frame: CGRect) {
+        super.init(frame: frame)
+
+        run {
+            Text("Hello World")
+        }
+    }
+}
+
+/// Instantiation with `View`
+ComposableView(Text("Hello World"))
+```
+
+## Usecases
+### Common `ViewModel`(`ObservableObject`) usecase
 
 ```swift
 import Compose
@@ -115,6 +165,7 @@ class ListViewController: ComposableController {
 }
 ```
 
+### Separate child view usecase
 You can this style to layout complex view. (like `Compose` of `Android`)
 ```swift
 import Compose
