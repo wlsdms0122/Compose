@@ -14,7 +14,7 @@ class RootViewBuilder {
         self.content = { AnyView(content()) }
     }
     
-    func setcontent(_ content: @escaping () -> some View) {
+    func setContent(_ content: @escaping () -> some View) {
         self.content = { AnyView(content()) }
     }
 }
@@ -319,7 +319,7 @@ open class ComposableController: UIHostingController<AnyView> {
     
     // MARK: - Public
     public func run(@ViewBuilder _ content: @escaping () -> some View) {
-        builder.setcontent(content)
+        builder.setContent(content)
     }
     
     // MARK: - Private

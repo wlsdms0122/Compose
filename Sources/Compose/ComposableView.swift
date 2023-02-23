@@ -10,8 +10,10 @@ import SwiftUI
 
 open class ComposableView: UIView {
     // MARK: - Property
-    private let controller: ComposableController
+    public let controller: ComposableController
+    
     public var rootView: AnyView { controller.rootView }
+    public var content: UIView { controller.view }
     
     // MARK: - Initializer
     public init(
@@ -533,7 +535,7 @@ public extension ComposableView {
         }
     }
     
-    public func run(_ content: some View) {
+    func run(_ content: some View) {
         run { content }
     }
 }
