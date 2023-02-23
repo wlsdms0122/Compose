@@ -25,6 +25,7 @@ open class ComposableController: UIHostingController<AnyView> {
     
     // MARK: - Initializer
     public init(
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -37,12 +38,15 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
         A: ObservableObject
     >(
         _ a: A,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -57,6 +61,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
@@ -65,6 +71,7 @@ open class ComposableController: UIHostingController<AnyView> {
     >(
         _ a: A,
         _ b: B,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -80,6 +87,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
@@ -90,6 +99,7 @@ open class ComposableController: UIHostingController<AnyView> {
         _ a: A,
         _ b: B,
         _ c: C,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -106,6 +116,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
@@ -118,6 +130,7 @@ open class ComposableController: UIHostingController<AnyView> {
         _ b: B,
         _ c: C,
         _ d: D,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -135,6 +148,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
@@ -149,6 +164,7 @@ open class ComposableController: UIHostingController<AnyView> {
         _ c: C,
         _ d: D,
         _ e: E,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -167,6 +183,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
@@ -183,6 +201,7 @@ open class ComposableController: UIHostingController<AnyView> {
         _ d: D,
         _ e: E,
         _ f: F,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -202,6 +221,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
@@ -220,6 +241,7 @@ open class ComposableController: UIHostingController<AnyView> {
         _ e: E,
         _ f: F,
         _ g: G,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -240,6 +262,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     public init<
@@ -260,6 +284,7 @@ open class ComposableController: UIHostingController<AnyView> {
         _ f: F,
         _ g: G,
         _ h: H,
+        disableSafeArea: Bool = false,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
@@ -281,6 +306,8 @@ open class ComposableController: UIHostingController<AnyView> {
                 }
             )
         )
+        
+        _disableSafeArea = disableSafeArea
     }
     
     @MainActor
@@ -300,9 +327,12 @@ open class ComposableController: UIHostingController<AnyView> {
 
 public extension ComposableController {
     convenience init(
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
-        self.init {
+        self.init(
+            disableSafeArea: disableSafeArea
+        ) {
             content
         }
     }
@@ -311,9 +341,13 @@ public extension ComposableController {
         A: ObservableObject
     >(
         _ a: A,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
-        self.init(a) {
+        self.init(
+            a,
+            disableSafeArea: disableSafeArea
+        ) {
             content
         }
     }
@@ -324,11 +358,13 @@ public extension ComposableController {
     >(
         _ a: A,
         _ b: B,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
             a,
-            b
+            b,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -342,12 +378,14 @@ public extension ComposableController {
         _ a: A,
         _ b: B,
         _ c: C,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
             a,
             b,
-            c
+            c,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -363,13 +401,15 @@ public extension ComposableController {
         _ b: B,
         _ c: C,
         _ d: D,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
             a,
             b,
             c,
-            d
+            d,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -387,6 +427,7 @@ public extension ComposableController {
         _ c: C,
         _ d: D,
         _ e: E,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -394,7 +435,8 @@ public extension ComposableController {
             b,
             c,
             d,
-            e
+            e,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -414,6 +456,7 @@ public extension ComposableController {
         _ d: D,
         _ e: E,
         _ f: F,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -422,7 +465,8 @@ public extension ComposableController {
             c,
             d,
             e,
-            f
+            f,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -444,6 +488,7 @@ public extension ComposableController {
         _ e: E,
         _ f: F,
         _ g: G,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -453,7 +498,8 @@ public extension ComposableController {
             d,
             e,
             f,
-            g
+            g,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
@@ -477,6 +523,7 @@ public extension ComposableController {
         _ f: F,
         _ g: G,
         _ h: H,
+        disableSafeArea: Bool = false,
         _ content: some View
     ) {
         self.init(
@@ -487,7 +534,8 @@ public extension ComposableController {
             e,
             f,
             g,
-            h
+            h,
+            disableSafeArea: disableSafeArea
         ) {
             content
         }
