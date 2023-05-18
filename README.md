@@ -30,10 +30,6 @@ dependencies: [
 ]
 ```
 
-> ⚠️ `1.2.1` version access private property of `UIHostingController` for fixing issue that view shouldnt' ignore safe area.
->
-> It can cause the app to be rejected when attempting to deploy to the App Store.
-
 # Getting Started
 You can inherit `ComposableController` to make view controller using `SwiftUI` view.
 
