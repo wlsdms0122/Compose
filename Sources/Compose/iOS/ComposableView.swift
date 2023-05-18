@@ -5,8 +5,9 @@
 //  Created by JSilver on 2023/02/20.
 //
 
-import UIKit
 import SwiftUI
+#if os(iOS)
+import UIKit
 
 open class ComposableView: UIView {
     // MARK: - Property
@@ -539,3 +540,4 @@ public extension ComposableView {
         run { content }
     }
 }
+#endif
