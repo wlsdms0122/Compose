@@ -7,18 +7,7 @@
 
 import SwiftUI
 
-class RootViewBuilder {
-    private(set) var content: () -> AnyView
-    
-    init(_ content: @escaping () -> some View) {
-        self.content = { AnyView(content()) }
-    }
-    
-    func setContent(_ content: @escaping () -> some View) {
-        self.content = { AnyView(content()) }
-    }
-}
-
+#if os(iOS)
 open class ComposableController: UIHostingController<AnyView> {
     // MARK: - Property
     private let builder: RootViewBuilder
@@ -545,3 +534,4 @@ public extension ComposableController {
         run { content }
     }
 }
+#endif
