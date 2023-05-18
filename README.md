@@ -20,12 +20,13 @@ Compose is a package that allows you to use `UIViewController` view as `SwiftUI`
 
 # Requirements
 - iOS 14.0+
+- macOS 11.0+
 
 # Installation
 ### Swift Package Manager
 ```swift
 dependencies: [
-    .package(url: "https://github.com/wlsdms0122/Compose.git", exact: "1.2.1")
+    .package(url: "https://github.com/wlsdms0122/Compose.git", exact: "1.3.0")
 ]
 ```
 
