@@ -305,6 +305,11 @@ open class ComposableController: UIHostingController<AnyView> {
     }
     
     // MARK: - Lifecycle
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        // Invalidate intrinsic content size when root view's layout changed.
+        view.invalidateIntrinsicContentSize()
+    }
     
     // MARK: - Public
     public func run(@ViewBuilder _ content: @escaping () -> some View) {
