@@ -11,17 +11,21 @@ import SwiftUI
 open class ComposableController: NSHostingController<AnyView> {
     // MARK: - Property
     private let builder: RootViewBuilder
+    private let refresher: Refresher
     
     // MARK: - Initializer
     public init(
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
-                ComposeView {
+                ComposeView(refresher) {
                     builder.content()
                 }
             )
@@ -35,11 +39,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView1(
+                    refresher,
                     a
                 ) {
                     builder.content()
@@ -57,11 +65,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView2(
+                    refresher,
                     a,
                     b
                 ) {
@@ -82,11 +94,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView3(
+                    refresher,
                     a,
                     b,
                     c
@@ -110,11 +126,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView4(
+                    refresher,
                     a,
                     b,
                     c,
@@ -141,11 +161,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView5(
+                    refresher,
                     a,
                     b,
                     c,
@@ -175,11 +199,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView6(
+                    refresher,
                     a,
                     b,
                     c,
@@ -212,11 +240,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView7(
+                    refresher,
                     a,
                     b,
                     c,
@@ -252,11 +284,15 @@ open class ComposableController: NSHostingController<AnyView> {
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
         let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
         self.builder = builder
+        self.refresher = refresher
         
         super.init(
             rootView: AnyView(
                 ComposeView8(
+                    refresher,
                     a,
                     b,
                     c,
@@ -282,6 +318,7 @@ open class ComposableController: NSHostingController<AnyView> {
     // MARK: - Public
     public func run(@ViewBuilder _ content: @escaping () -> some View) {
         builder.setContent(content)
+        refresher.refresh()
     }
     
     // MARK: - Private
