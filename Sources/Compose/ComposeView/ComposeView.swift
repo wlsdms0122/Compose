@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView<
     Content: View
 >: View {
@@ -35,6 +36,7 @@ struct ComposeView<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView1<
     A: ObservableObject,
     Content: View
@@ -68,6 +70,7 @@ struct ComposeView1<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView2<
     A: ObservableObject,
     B: ObservableObject,
@@ -106,6 +109,7 @@ struct ComposeView2<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView3<
     A: ObservableObject,
     B: ObservableObject,
@@ -149,6 +153,7 @@ struct ComposeView3<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView4<
     A: ObservableObject,
     B: ObservableObject,
@@ -197,6 +202,7 @@ struct ComposeView4<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView5<
     A: ObservableObject,
     B: ObservableObject,
@@ -250,6 +256,7 @@ struct ComposeView5<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView6<
     A: ObservableObject,
     B: ObservableObject,
@@ -308,6 +315,7 @@ struct ComposeView6<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView7<
     A: ObservableObject,
     B: ObservableObject,
@@ -371,6 +379,7 @@ struct ComposeView7<
     // MARK: - Private
 }
 
+@available(iOS 14.0, macOS 11.0, *)
 struct ComposeView8<
     A: ObservableObject,
     B: ObservableObject,

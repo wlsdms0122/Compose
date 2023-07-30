@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "Compose",
     platforms: [
-        .iOS(.v14),
-        .macOS(.v11)
+        .iOS(.v13),
+        .macOS(.v10_15)
     ],
     products: [
         .library(

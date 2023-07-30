@@ -26,7 +26,9 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView(refresher) {
+                CompatibilityView(
+                    refresher
+                ) {
                     builder.content()
                 }
             )
@@ -50,7 +52,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView1(
+                CompatibilityView1(
                     refresher,
                     a
                 ) {
@@ -79,7 +81,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView2(
+                CompatibilityView2(
                     refresher,
                     a,
                     b
@@ -111,7 +113,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView3(
+                CompatibilityView3(
                     refresher,
                     a,
                     b,
@@ -146,7 +148,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView4(
+                CompatibilityView4(
                     refresher,
                     a,
                     b,
@@ -184,7 +186,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView5(
+                CompatibilityView5(
                     refresher,
                     a,
                     b,
@@ -225,7 +227,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView6(
+                CompatibilityView6(
                     refresher,
                     a,
                     b,
@@ -269,7 +271,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView7(
+                CompatibilityView7(
                     refresher,
                     a,
                     b,
@@ -316,7 +318,7 @@ open class ComposableController: UIHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView8(
+                CompatibilityView8(
                     refresher,
                     a,
                     b,
