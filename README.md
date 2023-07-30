@@ -19,14 +19,14 @@ Compose is a package that allows you to use `UIViewController` view as `SwiftUI`
 - [License](#license)
 
 # Requirements
-- iOS 14.0+
-- macOS 11.0+
+- iOS 13.0+
+- macOS 10.15+
 
 # Installation
 ### Swift Package Manager
 ```swift
 dependencies: [
-    .package(url: "https://github.com/wlsdms0122/Compose.git", exact: "1.3.0")
+    .package(url: "https://github.com/wlsdms0122/Compose.git", exact: "1.6.0")
 ]
 ```
 
@@ -53,7 +53,6 @@ import Compose
 class MainViewController: ComposableController {
     override init() {
         super.init()
-        
         run {
             Text("Hello World")
         }
@@ -69,15 +68,15 @@ You can use any `ObservableObject` to manage states of view. Typically use conve
 import Compose
 
 class MainViewController: ComposableController {
-    private class Environment: ObservableObject {
+    private final class Environment: ObservableObject {
         @Published
         var count: Int = 0
     }
 
     override init() {
         let env = Environment()
-        super.init(env)
-        
+
+        super.init(env)        
         run {
             Text("\(env.count)")
             Button("+1") {
@@ -152,7 +151,6 @@ import Compose
 class ListViewController: ComposableController {
     init(viewModel: ListViewModel) {
         super.init(viewModel)
-        
         run {
             List(viewModel.items) {
                 Text("\($0.title)")
@@ -170,7 +168,6 @@ import Compose
 class ListViewController: ComposableController {
     init(viewModel: ListViewModel) {
         super.init(viewModel)
-        
         run {
             Root(
                 items: viewModel.items
@@ -216,7 +213,6 @@ struct Main_Previews: PreviewProvider {
         MainViewController().rootView
     }
 }
-
 #endif
 ```
 
