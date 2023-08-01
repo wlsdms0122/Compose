@@ -9,11 +9,12 @@ Compose is a package that allows you to use `UIViewController` view as `SwiftUI`
     - [Swift Package Manager](#swift-package-manager)
 - [Getting Started](#getting-started)
   - [Extras](#extras)
-    - [Variable initializer](#variable-initializer)
-    - [ComposableView supports](#composableview-supports)
+    - [Self reference](#self-reference)
+    - [ComposableView(UIView) supports](#composableviewuiview-supports)
   - [Usecases](#usecases)
     - [Common `ViewModel`(`ObservableObject`) usecase](#common-viewmodelobservableobject-usecase)
     - [Separate child view usecase](#separate-child-view-usecase)
+    - [Use exist view](#use-exist-view)
   - [Preview](#preview)
 - [Contribution](#contribution)
 - [License](#license)
@@ -34,26 +35,19 @@ dependencies: [
 You can inherit `ComposableController` to make view controller using `SwiftUI` view.
 
 `CopmosableController` inherited `UIHostingController`.
-
 ```swift
 import Compose
 
-class MainViewController: ComposableController {
-    ...
-}
+class MainViewController: ComposableController { ... }
 ```
 
-To layout view of controller, You should be define initializer. And call `run(_:)` to write `SwiftUI` view after call super class's initializer.
-
-The view passed through the `run(_:)` method is called when `SwiftUI` needs to re-render the view.
-
+To layout view of controller, You should be define initializer. The content body will call when `SwiftUI` needs to re-render thre view.
 ```swift
 import Compose
 
 class MainViewController: ComposableController {
-    override init() {
-        super.init()
-        run {
+    init() {
+        super.init() {
             Text("Hello World")
         }
     }
@@ -62,7 +56,16 @@ class MainViewController: ComposableController {
 
 You can use any `ObservableObject` to manage states of view. Typically use convention that define nested class that adopt `ObservableObject`. And pass it to super class's initializer after instantiate.
 
+And in iOS 14.0 or macOS 11.0 or later, you can choose the type between `StateObject` and `ObservedObject` using `ComposableObject`'s method
+
 > ⚠️ Not use `@State` or `@Binding` property wrapper in `ComposableController`. All states are managed by `@Published` of `ObservableObejct`.
+```swift
+public extension ComposableObject {
+    @available(iOS 14.0, macOS 11.0, *)
+    static func state<ObjectType: ObservableObject>(_ object: ObjectType) -> Self where Self == StateObject<ObjectType>
+    static func observed<ObjectType: ObservableObject>(_ object: ObjectType) -> Self where Self == ObservedObject<ObjectType>
+}
+```
 
 ```swift
 import Compose
@@ -76,8 +79,7 @@ class MainViewController: ComposableController {
     override init() {
         let env = Environment()
 
-        super.init(env)        
-        run {
+        super.init(.observed(env)) {
             Text("\(env.count)")
             Button("+1") {
                 env.count += 1
@@ -87,41 +89,43 @@ class MainViewController: ComposableController {
 }
 ```
 
-The `ComposableController` prepared a number of initializers for objects. (0-8)
+The `ComposableController` prepared a number of initializers for observable objects. (0-8)
 
+If you pass the `ObservableObject` itself, it will behave as the `ObservedObject` in iOS 13 or macOS 10.15 and as the `StateObject` in iOS 14.0+ or macOS 11.0+ and later.
 ```swift
-public init()
-public init<A>(_ a: A) where A : ObservableObject
-public init<A, B>(_ a: A, _ b: B) where A : ObservableObject, B : ObservableObject
-public init<A, B, C>(_ a: A, _ b: B, _ c: C) where A : ObservableObject, B : ObservableObject, C : ObservableObject
-public init<A, B, C, D>(_ a: A, _ b: B, _ c: C, _ d: D) where A : ObservableObject, B : ObservableObject, C : ObservableObject, D : ObservableObject
-public init<A, B, C, D, E>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E) where A : ObservableObject, B : ObservableObject, C : ObservableObject, D : ObservableObject, E : ObservableObject
-public init<A, B, C, D, E, F>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F) where A : ObservableObject, B : ObservableObject, C : ObservableObject, D : ObservableObject, E : ObservableObject, F : ObservableObject
-public init<A, B, C, D, E, F, G>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F, _ g: G) where A : ObservableObject, B : ObservableObject, C : ObservableObject, D : ObservableObject, E : ObservableObject, F : ObservableObject, G : ObservableObject
-public init<A, B, C, D, E, F, G, H>(_ a: A, _ b: B, _ c: C, _ d: D, _ e: E, _ f: F, _ g: G, _ h: H) where A : ObservableObject, B : ObservableObject, C : ObservableObject, D : ObservableObject, E : ObservableObject, F : ObservableObject, G : ObservableObject, H : ObservableObject
+import Compose
+
+class MainViewController: ComposableController {
+    ...
+    override init() {
+        ...
+        let env = Environment()
+        // The `env` object behaves as either an `ObservedObject` or a `StateObject`, depending on its version.
+        super.init(env)
+        ...
+    }
+}
 ```
 
 ## Extras
-### Variable initializer
-You can layout view in super initializer call also.
-
+### Self reference
+To reference your own object (view controller), you can call the `run(_:)` method after the super initializer call.
 ```swift
 import Compose
 
 class MainViewController: ComposableController {
     override init() {
-        super.init {
-            Text("Hello World")
+        super.init()
+        run { [weak self] in
+            Button("Present new controller") {
+                self?.present(ViewController(), animated: true)
+            }
         }
     }
 }
 ```
 
-```swift
-ComposableController(Text("Hello World"))
-```
-
-### ComposableView supports
+### ComposableView(UIView) supports
 If you want to convert a SwiftUI `View` to a `UIView`, use `ComposableView`. It's almost same with `ComposableController`.
 
 ```swift
@@ -130,9 +134,7 @@ import Compose
 /// Define custom `UIView`.
 class TitleLabel: ComposableView {
     init(frame: CGRect) {
-        super.init(frame: frame)
-
-        run {
+        super.init(frame: frame) {
             Text("Hello World")
         }
     }
@@ -144,7 +146,6 @@ ComposableView(Text("Hello World"))
 
 ## Usecases
 ### Common `ViewModel`(`ObservableObject`) usecase
-
 ```swift
 import Compose
 
@@ -200,6 +201,17 @@ private func ListItem(
         .onTapGesture {
             onItemTap(item)
         }
+}
+```
+
+### Use exist view
+```swift
+import Compose
+
+class ListViewController: ComposableController {
+    init(viewModel: ListViewModel) {
+        super.init(ListView(viewModel))
+    }
 }
 ```
 
