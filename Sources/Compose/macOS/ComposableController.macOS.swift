@@ -25,7 +25,29 @@ open class ComposableController: NSHostingController<AnyView> {
         
         super.init(
             rootView: AnyView(
-                ComposeView(refresher) {
+                ComposeView(
+                    refresher
+                ) {
+                    builder.content()
+                }
+            )
+        )
+    }
+    
+    public init(
+        _ content: some View
+    ) {
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        super.init(
+            rootView: AnyView(
+                ComposeView(
+                    refresher
+                ) {
                     builder.content()
                 }
             )
@@ -33,7 +55,7 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject
+        A: ComposableObject
     >(
         _ a: A,
         @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
@@ -57,8 +79,8 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject,
-        B: ObservableObject
+        A: ComposableObject,
+        B: ComposableObject
     >(
         _ a: A,
         _ b: B,
@@ -84,9 +106,9 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject,
-        B: ObservableObject,
-        C: ObservableObject
+        A: ComposableObject,
+        B: ComposableObject,
+        C: ComposableObject
     >(
         _ a: A,
         _ b: B,
@@ -114,10 +136,10 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject,
-        B: ObservableObject,
-        C: ObservableObject,
-        D: ObservableObject
+        A: ComposableObject,
+        B: ComposableObject,
+        C: ComposableObject,
+        D: ComposableObject
     >(
         _ a: A,
         _ b: B,
@@ -147,11 +169,11 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject,
-        B: ObservableObject,
-        C: ObservableObject,
-        D: ObservableObject,
-        E: ObservableObject
+        A: ComposableObject,
+        B: ComposableObject,
+        C: ComposableObject,
+        D: ComposableObject,
+        E: ComposableObject
     >(
         _ a: A,
         _ b: B,
@@ -183,12 +205,12 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject,
-        B: ObservableObject,
-        C: ObservableObject,
-        D: ObservableObject,
-        E: ObservableObject,
-        F: ObservableObject
+        A: ComposableObject,
+        B: ComposableObject,
+        C: ComposableObject,
+        D: ComposableObject,
+        E: ComposableObject,
+        F: ComposableObject
     >(
         _ a: A,
         _ b: B,
@@ -222,13 +244,13 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject,
-        B: ObservableObject,
-        C: ObservableObject,
-        D: ObservableObject,
-        E: ObservableObject,
-        F: ObservableObject,
-        G: ObservableObject
+        A: ComposableObject,
+        B: ComposableObject,
+        C: ComposableObject,
+        D: ComposableObject,
+        E: ComposableObject,
+        F: ComposableObject,
+        G: ComposableObject
     >(
         _ a: A,
         _ b: B,
@@ -264,14 +286,14 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     public init<
-        A: ObservableObject,
-        B: ObservableObject,
-        C: ObservableObject,
-        D: ObservableObject,
-        E: ObservableObject,
-        F: ObservableObject,
-        G: ObservableObject,
-        H: ObservableObject
+        A: ComposableObject,
+        B: ComposableObject,
+        C: ComposableObject,
+        D: ComposableObject,
+        E: ComposableObject,
+        F: ComposableObject,
+        G: ComposableObject,
+        H: ComposableObject
     >(
         _ a: A,
         _ b: B,
@@ -308,61 +330,86 @@ open class ComposableController: NSHostingController<AnyView> {
         )
     }
     
-    @MainActor
-    public required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Lifecycle
-    
-    // MARK: - Public
-    public func run(@ViewBuilder _ content: @escaping () -> some View) {
-        builder.setContent(content)
-        refresher.refresh()
-    }
-    
-    // MARK: - Private
-}
-
-public extension ComposableController {
-    convenience init(
-        _ content: some View
-    ) {
-        self.init {
-            content
-        }
-    }
-    
-    convenience init<
+    // MARK: ObservableObject
+    public init<
         A: ObservableObject
     >(
         _ a: A,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView1(
+                        refresher,
+                        .state(a)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView1(
+                        refresher,
+                        .observed(a)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
-    convenience init<
+    public init<
         A: ObservableObject,
         B: ObservableObject
     >(
         _ a: A,
         _ b: B,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a,
-            b
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView2(
+                        refresher,
+                        .state(a),
+                        .state(b)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView2(
+                        refresher,
+                        .observed(a),
+                        .observed(b)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
-    convenience init<
+    public init<
         A: ObservableObject,
         B: ObservableObject,
         C: ObservableObject
@@ -370,18 +417,44 @@ public extension ComposableController {
         _ a: A,
         _ b: B,
         _ c: C,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a,
-            b,
-            c
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView3(
+                        refresher,
+                        .state(a),
+                        .state(b),
+                        .state(c)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView3(
+                        refresher,
+                        .observed(a),
+                        .observed(b),
+                        .observed(c)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
-    convenience init<
+    public init<
         A: ObservableObject,
         B: ObservableObject,
         C: ObservableObject,
@@ -391,19 +464,46 @@ public extension ComposableController {
         _ b: B,
         _ c: C,
         _ d: D,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a,
-            b,
-            c,
-            d
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView4(
+                        refresher,
+                        .state(a),
+                        .state(b),
+                        .state(c),
+                        .state(d)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView4(
+                        refresher,
+                        .observed(a),
+                        .observed(b),
+                        .observed(c),
+                        .observed(d)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
-    convenience init<
+    public init<
         A: ObservableObject,
         B: ObservableObject,
         C: ObservableObject,
@@ -415,20 +515,48 @@ public extension ComposableController {
         _ c: C,
         _ d: D,
         _ e: E,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a,
-            b,
-            c,
-            d,
-            e
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView5(
+                        refresher,
+                        .state(a),
+                        .state(b),
+                        .state(c),
+                        .state(d),
+                        .state(e)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView5(
+                        refresher,
+                        .observed(a),
+                        .observed(b),
+                        .observed(c),
+                        .observed(d),
+                        .observed(e)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
-    convenience init<
+    public init<
         A: ObservableObject,
         B: ObservableObject,
         C: ObservableObject,
@@ -442,21 +570,50 @@ public extension ComposableController {
         _ d: D,
         _ e: E,
         _ f: F,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a,
-            b,
-            c,
-            d,
-            e,
-            f
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView6(
+                        refresher,
+                        .state(a),
+                        .state(b),
+                        .state(c),
+                        .state(d),
+                        .state(e),
+                        .state(f)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView6(
+                        refresher,
+                        .observed(a),
+                        .observed(b),
+                        .observed(c),
+                        .observed(d),
+                        .observed(e),
+                        .observed(f)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
-    convenience init<
+    public init<
         A: ObservableObject,
         B: ObservableObject,
         C: ObservableObject,
@@ -472,22 +629,52 @@ public extension ComposableController {
         _ e: E,
         _ f: F,
         _ g: G,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a,
-            b,
-            c,
-            d,
-            e,
-            f,
-            g
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView7(
+                        refresher,
+                        .state(a),
+                        .state(b),
+                        .state(c),
+                        .state(d),
+                        .state(e),
+                        .state(f),
+                        .state(g)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView7(
+                        refresher,
+                        .observed(a),
+                        .observed(b),
+                        .observed(c),
+                        .observed(d),
+                        .observed(e),
+                        .observed(f),
+                        .observed(g)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
-    convenience init<
+    public init<
         A: ObservableObject,
         B: ObservableObject,
         C: ObservableObject,
@@ -505,22 +692,70 @@ public extension ComposableController {
         _ f: F,
         _ g: G,
         _ h: H,
-        _ content: some View
+        @ViewBuilder _ content: @escaping () -> some View = { EmptyView() }
     ) {
-        self.init(
-            a,
-            b,
-            c,
-            d,
-            e,
-            f,
-            g,
-            h
-        ) {
-            content
+        let builder = RootViewBuilder(content)
+        let refresher = Refresher()
+        
+        self.builder = builder
+        self.refresher = refresher
+        
+        if #available(macOS 11.0, *) {
+            super.init(
+                rootView: AnyView(
+                    ComposeView8(
+                        refresher,
+                        .state(a),
+                        .state(b),
+                        .state(c),
+                        .state(d),
+                        .state(e),
+                        .state(f),
+                        .state(g),
+                        .state(h)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
+        } else {
+            super.init(
+                rootView: AnyView(
+                    ComposeView8(
+                        refresher,
+                        .observed(a),
+                        .observed(b),
+                        .observed(c),
+                        .observed(d),
+                        .observed(e),
+                        .observed(f),
+                        .observed(g),
+                        .observed(h)
+                    ) {
+                        builder.content()
+                    }
+                )
+            )
         }
     }
     
+    @MainActor
+    public required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
+    
+    // MARK: - Public
+    public func run(@ViewBuilder _ content: @escaping () -> some View) {
+        builder.setContent(content)
+        refresher.refresh()
+    }
+    
+    // MARK: - Private
+}
+
+public extension ComposableController {
     func run(_ content: some View) {
         run { content }
     }

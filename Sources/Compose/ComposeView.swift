@@ -16,9 +16,8 @@ struct ComposeView<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    
     private let content: () -> Content
     
     // MARK: - Initializer
@@ -36,7 +35,7 @@ struct ComposeView<
 }
 
 struct ComposeView1<
-    A: ObservableObject,
+    A: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -45,10 +44,9 @@ struct ComposeView1<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
+    private let a: A
     
     private let content: () -> Content
     
@@ -59,7 +57,7 @@ struct ComposeView1<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
+        self.a = a
         self.content = content
     }
     
@@ -69,8 +67,8 @@ struct ComposeView1<
 }
 
 struct ComposeView2<
-    A: ObservableObject,
-    B: ObservableObject,
+    A: ComposableObject,
+    B: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -79,12 +77,10 @@ struct ComposeView2<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
+    private let a: A
+    private let b: B
     
     private let content: () -> Content
     
@@ -96,8 +92,8 @@ struct ComposeView2<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
+        self.a = a
+        self.b = b
         self.content = content
     }
     
@@ -107,9 +103,9 @@ struct ComposeView2<
 }
 
 struct ComposeView3<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
+    A: ComposableObject,
+    B: ComposableObject,
+    C: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -118,14 +114,11 @@ struct ComposeView3<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
+    private let a: A
+    private let b: B
+    private let c: C
     
     private let content: () -> Content
     
@@ -138,9 +131,9 @@ struct ComposeView3<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
+        self.a = a
+        self.b = b
+        self.c = c
         self.content = content
     }
     
@@ -150,10 +143,10 @@ struct ComposeView3<
 }
 
 struct ComposeView4<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
+    A: ComposableObject,
+    B: ComposableObject,
+    C: ComposableObject,
+    D: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -162,16 +155,12 @@ struct ComposeView4<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
+    private let a: A
+    private let b: B
+    private let c: C
+    private let d: D
     
     private let content: () -> Content
     
@@ -185,10 +174,10 @@ struct ComposeView4<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
         self.content = content
     }
     
@@ -198,11 +187,11 @@ struct ComposeView4<
 }
 
 struct ComposeView5<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
+    A: ComposableObject,
+    B: ComposableObject,
+    C: ComposableObject,
+    D: ComposableObject,
+    E: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -211,18 +200,13 @@ struct ComposeView5<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
+    private let a: A
+    private let b: B
+    private let c: C
+    private let d: D
+    private let e: E
     
     private let content: () -> Content
     
@@ -237,11 +221,11 @@ struct ComposeView5<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.e = e
         self.content = content
     }
     
@@ -251,12 +235,12 @@ struct ComposeView5<
 }
 
 struct ComposeView6<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
-    F: ObservableObject,
+    A: ComposableObject,
+    B: ComposableObject,
+    C: ComposableObject,
+    D: ComposableObject,
+    E: ComposableObject,
+    F: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -265,20 +249,14 @@ struct ComposeView6<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
-    @StateObject
-    private var f: F
+    private let a: A
+    private let b: B
+    private let c: C
+    private let d: D
+    private let e: E
+    private let f: F
     
     private let content: () -> Content
     
@@ -294,12 +272,12 @@ struct ComposeView6<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
-        self._f = .init(wrappedValue: f)
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.e = e
+        self.f = f
         self.content = content
     }
     
@@ -309,13 +287,13 @@ struct ComposeView6<
 }
 
 struct ComposeView7<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
-    F: ObservableObject,
-    G: ObservableObject,
+    A: ComposableObject,
+    B: ComposableObject,
+    C: ComposableObject,
+    D: ComposableObject,
+    E: ComposableObject,
+    F: ComposableObject,
+    G: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -324,22 +302,15 @@ struct ComposeView7<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
-    @StateObject
-    private var f: F
-    @StateObject
-    private var g: G
+    private let a: A
+    private let b: B
+    private let c: C
+    private let d: D
+    private let e: E
+    private let f: F
+    private let g: G
     
     private let content: () -> Content
     
@@ -356,13 +327,13 @@ struct ComposeView7<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
-        self._f = .init(wrappedValue: f)
-        self._g = .init(wrappedValue: g)
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.e = e
+        self.f = f
+        self.g = g
         self.content = content
     }
     
@@ -372,14 +343,14 @@ struct ComposeView7<
 }
 
 struct ComposeView8<
-    A: ObservableObject,
-    B: ObservableObject,
-    C: ObservableObject,
-    D: ObservableObject,
-    E: ObservableObject,
-    F: ObservableObject,
-    G: ObservableObject,
-    H: ObservableObject,
+    A: ComposableObject,
+    B: ComposableObject,
+    C: ComposableObject,
+    D: ComposableObject,
+    E: ComposableObject,
+    F: ComposableObject,
+    G: ComposableObject,
+    H: ComposableObject,
     Content: View
 >: View {
     // MARK: - View
@@ -388,24 +359,16 @@ struct ComposeView8<
     }
     
     // MARK: - Property
-    @StateObject
+    @ObservedObject
     private var refresher: Refresher
-    @StateObject
-    private var a: A
-    @StateObject
-    private var b: B
-    @StateObject
-    private var c: C
-    @StateObject
-    private var d: D
-    @StateObject
-    private var e: E
-    @StateObject
-    private var f: F
-    @StateObject
-    private var g: G
-    @StateObject
-    private var h: H
+    private let a: A
+    private let b: B
+    private let c: C
+    private let d: D
+    private let e: E
+    private let f: F
+    private let g: G
+    private let h: H
     
     private let content: () -> Content
     
@@ -423,14 +386,14 @@ struct ComposeView8<
         @ViewBuilder content: @escaping () -> Content
     ) {
         self._refresher = .init(wrappedValue: refresher)
-        self._a = .init(wrappedValue: a)
-        self._b = .init(wrappedValue: b)
-        self._c = .init(wrappedValue: c)
-        self._d = .init(wrappedValue: d)
-        self._e = .init(wrappedValue: e)
-        self._f = .init(wrappedValue: f)
-        self._g = .init(wrappedValue: g)
-        self._h = .init(wrappedValue: h)
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.e = e
+        self.f = f
+        self.g = g
+        self.h = h
         self.content = content
     }
     
