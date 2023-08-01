@@ -9,6 +9,18 @@ import XCTest
 @testable import Compose
 
 final class ComposeTests: XCTestCase {
+    // MARK: - Property
+    
+    // MARK: - Lifecycle
+    override func setUp() async throws {
+        
+    }
+    
+    override func tearDown() async throws {
+        
+    }
+    
+    // MARK: - Test
     func testExample() throws {
         
     }

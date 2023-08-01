@@ -16,6 +16,10 @@ class RootViewBuilder {
         self.content = { AnyView(content()) }
     }
     
+    convenience init(_ content: some View) {
+        self.init { content }
+    }
+    
     // MARK: - Public
     func setContent(_ content: @escaping () -> some View) {
         self.content = { AnyView(content()) }
