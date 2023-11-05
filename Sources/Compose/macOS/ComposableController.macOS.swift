@@ -745,6 +745,29 @@ open class ComposableController: NSHostingController<AnyView> {
     }
     
     // MARK: - Lifecycle
+    open override func viewWillLayout() {
+        super.viewWillLayout()
+        
+        guard let window = view.window,
+            window.contentViewController == self
+        else { return }
+        
+        // Only attempt to adjust if the window content view controller is itself.
+        let fittingSize = view.fittingSize
+        let windowSize = window.frame.size
+        
+        guard windowSize.width < fittingSize.width
+            || windowSize.height < fittingSize.height
+        else { return }
+        
+        // Adjust window size when the window size tries to be smaller than the view size.
+        let adjustedSize = CGSize(
+            width: max(windowSize.width, fittingSize.width),
+            height: max(windowSize.height, fittingSize.height)
+        )
+        
+        window.setContentSize(adjustedSize)
+    }
     
     // MARK: - Public
     public func run(@ViewBuilder _ content: @escaping () -> some View) {
