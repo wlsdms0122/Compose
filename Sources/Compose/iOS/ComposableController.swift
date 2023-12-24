@@ -799,6 +799,11 @@ open class ComposableController: UIHostingController<AnyView> {
     }
     
     // MARK: - Lifecycle
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .clear
+    }
+    
     open override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         // Invalidate intrinsic content size when root view's layout changed.
