@@ -27,7 +27,7 @@ Compose is a package that allows you to use `UIViewController` view as `SwiftUI`
 ### Swift Package Manager
 ```swift
 dependencies: [
-    .package(url: "https://github.com/wlsdms0122/Compose.git", .upToNextMajor(from: "1.6.0"))
+    .package(url: "https://github.com/wlsdms0122/Compose.git", from: "1.0.0")
 ]
 ```
 
@@ -71,8 +71,8 @@ public extension ComposableObject {
 import Compose
 
 class MainViewController: ComposableController {
-    private final class Environment: ObservableObject {
-        @Published
+    @ComposableObject
+    final class Environment {
         var count: Int = 0
     }
 
