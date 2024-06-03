@@ -1,5 +1,5 @@
 //
-//  MacroTests.swift
+//  ComposeMacroTests.swift
 //
 //
 //  Created by jsilver on 6/2/24.
@@ -14,7 +14,7 @@ let testMacros: [String: Macro.Type] = [
     "ComposableObject": ComposableObjectMacro.self,
 ]
 
-final class MacroTests: XCTestCase {
+final class ComposeMacroTests: XCTestCase {
     // MARK: - Property
     
     // MARK: - Lifecycle
@@ -32,15 +32,21 @@ final class MacroTests: XCTestCase {
             """
             @ComposableObject
             class Environment {
-                var a: Int = 0
-                private var b: Int = 0
+                public var a: Int = 0
+                var b: Int = 0
+                private(set) var c: Int = 0
+                private var d: Int = 0
             }
             """,
             expandedSource: """
             class Environment {
                 @Published
-                var a: Int = 0
-                private var b: Int = 0
+                public var a: Int = 0
+                @Published
+                var b: Int = 0
+                @Published
+                private(set) var c: Int = 0
+                private var d: Int = 0
             }
 
             extension Environment: ObservableObject {

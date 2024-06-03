@@ -68,7 +68,7 @@ private extension VariableDeclSyntax {
     }
     
     var isPrivateProperty: Bool {
-        modifier?.name.text == "private"
+        modifier?.name.text == "private" && modifier?.detail?.detail.text != "set"
     }
 }
 
