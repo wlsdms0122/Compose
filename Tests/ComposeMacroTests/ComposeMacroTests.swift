@@ -36,6 +36,12 @@ final class ComposeMacroTests: XCTestCase {
                 var b: Int = 0
                 private(set) var c: Int = 0
                 private var d: Int = 0
+                public private(set) var e: Int = 0
+                public let f: Int = 0
+                let g: Int = 0
+                private(set) let h: Int = 0
+                private let i: Int = 0
+                public private(set) let j: Int = 0
             }
             """,
             expandedSource: """
@@ -47,6 +53,13 @@ final class ComposeMacroTests: XCTestCase {
                 @Published
                 private(set) var c: Int = 0
                 private var d: Int = 0
+                @Published
+                public private(set) var e: Int = 0
+                public let f: Int = 0
+                let g: Int = 0
+                private(set) let h: Int = 0
+                private let i: Int = 0
+                public private(set) let j: Int = 0
             }
 
             extension Environment: ObservableObject {
