@@ -38,6 +38,10 @@ extension ComposableObjectMacro: MemberAttributeMacro {
             return []
         }
         
+        guard !(member.variable?.isConstant ?? false) else {
+            return []
+        }
+        
         guard member.variable?.binding?.isObservableStoredProperty ?? false else {
             return []
         }
@@ -69,6 +73,10 @@ private extension VariableDeclSyntax {
     
     var isPrivateProperty: Bool {
         modifier?.name.text == "private" && modifier?.detail?.detail.text != "set"
+    }
+    
+    var isConstant: Bool {
+        bindingSpecifier.text == "let"
     }
 }
 
